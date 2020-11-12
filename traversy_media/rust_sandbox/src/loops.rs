@@ -9,12 +9,6 @@ pub fn run() {
         }
     }
 
-    for x in 0..40 {
-        print!("=")
-    }
-    println!("\n");
-    println!("\n");
-
     // while (FizzBuzz)
     while count <= 100 {
         if count % 15 == 0 {
@@ -30,12 +24,6 @@ pub fn run() {
         count += 1;
     }
 
-    for x0 in 0..40 {
-        print!("=")
-    }
-    println!("\n");
-    println!("\n");
-
     // for range
     for x in 0..100 {
         if x % 15 == 0 {
@@ -48,10 +36,4 @@ pub fn run() {
             println!("{}", x);
         }
     }
-
-    for x1 in 0..40 {
-        print!("=")
-    }
-    println!("\n");
-    println!("\n");
 }
