@@ -5,3 +5,4 @@
 * Doug Milford's 
     * [Rust Ownership and Borrowing](https://www.youtube.com/watch?v=lQ7XF-6HYGc)
     * [Rust Functions and Procesures](https://www.youtube.com/watch?v=hEhnDRR4Ijs)
+    * [Rust Generics](https://www.youtube.com/watch?v=nvur2Ast8hE)
