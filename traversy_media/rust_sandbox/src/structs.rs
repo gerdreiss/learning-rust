@@ -35,7 +35,7 @@ impl Person {
 }
 
 pub fn run() {
-    let mut c = Color {
+    let c = Color {
         red: 255,
         green: 0,
         blue: 0,
