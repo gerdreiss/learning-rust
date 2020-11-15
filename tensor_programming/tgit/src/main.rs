@@ -1,6 +1,8 @@
 mod error;
+mod index;
 mod init;
+mod types;
 
 fn main() {
-    println!("Hello, world!");
+    println!("TGIT!");
 }
