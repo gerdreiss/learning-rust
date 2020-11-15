@@ -1,0 +1,12 @@
+[package]
+name = "tgit"
+version = "0.1.0"
+authors = ["Gerd Reiss <gerd@reiss.pro>"]
+edition = "2018"
+
+
+[dependencies]
+clap = "2.33.3"
+rust-crypto = "0.2.36"
+regex = "1"
+lazy_static = "1.4.0"
