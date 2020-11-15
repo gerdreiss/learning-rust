@@ -1,9 +1,9 @@
-use super::error::TgitError;
-
 use std::fs;
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
+
+use super::error::TgitError;
 
 pub fn init() -> Result<(), TgitError> {
     let dir = Path::new(".tgit");

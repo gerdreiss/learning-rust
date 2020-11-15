@@ -1,9 +1,10 @@
-use super::error::TgitError;
 use std::collections::BTreeMap;
 use std::fs::File;
 use std::io;
 use std::io::{BufRead, BufReader, Write};
 use std::path::PathBuf;
+
+use super::error::TgitError;
 
 pub struct Index {
     pub path: PathBuf,

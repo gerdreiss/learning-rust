@@ -1,9 +1,10 @@
-use crypto::digest::Digest;
-use crypto::sha1::Sha1;
 use std::fs::File;
 use std::io;
 use std::io::Read;
 use std::path::PathBuf;
+
+use crypto::digest::Digest;
+use crypto::sha1::Sha1;
 
 pub enum Tree {
     BlobEntry {
