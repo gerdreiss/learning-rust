@@ -3,13 +3,13 @@ extern crate lazy_static;
 
 use clap::{App, Arg, SubCommand};
 
+mod add;
+mod commit;
 mod error;
+mod file;
 mod index;
 mod init;
 mod types;
-mod file;
-mod add;
-mod commit;
 
 fn main() {
     let m = App::new("tgit")
