@@ -48,7 +48,7 @@ impl Index {
     pub fn write(&self) -> io::Result<()> {
         let mut index = File::create(&self.path)?;
         for (ref hash, ref path) in self.hashtree.iter() {
-            writeln!(&mut index, "{} {}", hash, path);
+            writeln!(&mut index, "{} {}", hash, path)?;
         }
         Ok(())
     }

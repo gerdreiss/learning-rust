@@ -13,6 +13,6 @@ pub fn init() -> Result<(), TgitError> {
     fs::create_dir(dir.join("refs").join("heads"))?;
 
     let mut head = File::create(dir.join("HEAD"))?;
-    head.write_all("refs: refs/heads/master".as_bytes())?;
+    head.write_all(b"refs: refs/heads/master")?;
     Ok(())
 }

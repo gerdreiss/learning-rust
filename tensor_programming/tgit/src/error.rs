@@ -10,11 +10,11 @@ pub enum TgitError {
 
 impl fmt::Display for TgitError {
     fn fmt(&self, formatter: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        match self {
-            &TgitError::IoError(ref e) => e.fmt(formatter),
-            &TgitError::NoDirectory => formatter.write_str("No Directory Found"),
-            &TgitError::InvalidCommit => formatter.write_str("Invalid Commit"),
-            &TgitError::InvalidIndex => formatter.write_str("Corrupt index")
+        match *self {
+            TgitError::IoError(ref e) => e.fmt(formatter),
+            TgitError::NoDirectory => formatter.write_str("No Directory Found"),
+            TgitError::InvalidCommit => formatter.write_str("Invalid Commit"),
+            TgitError::InvalidIndex => formatter.write_str("Corrupt index")
         }
     }
 }

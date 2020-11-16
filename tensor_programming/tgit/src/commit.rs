@@ -45,8 +45,8 @@ impl Commit {
         let mut commit = Commit::new(None);
         commit.hash = Some(hash.to_string());
         lazy_static! {
-            static ref PARENT: Regex = Regex::new(r"parent ([0-9a-f]{40}").unwrap();
-            static ref BLOB: Regex = Regex::new(r"blob ([0-9a-f]{40} (.*)").unwrap();
+            static ref PARENT: Regex = Regex::new(r"parent ([0-9a-f]{40})").unwrap();
+            static ref BLOB: Regex = Regex::new(r"blob ([0-9a-f]{40}) (.*)").unwrap();
         }
         for line in input.lines() {
             if let Some(ref caps) = PARENT.captures(line) {
@@ -98,7 +98,7 @@ pub fn commit() -> Result<(), TgitError> {
     };
 
     let mut commit = Commit::new(parent.as_ref());
-    parent.map(|p| p.print());
+    if let Some(p) = parent { p.print() }
     commit.add_from_index(&index);
     commit.print();
 

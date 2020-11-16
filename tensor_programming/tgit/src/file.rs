@@ -18,8 +18,8 @@ pub struct FileService {
 impl FileService {
     pub fn new() -> Result<FileService, TgitError> {
         let root_dir = FileService::find_root()?;
-        let tgit_dir = root_dir.join(".tgit").to_path_buf();
-        let object_dir = tgit_dir.join("objects").to_path_buf();
+        let tgit_dir = root_dir.join(".tgit");
+        let object_dir = tgit_dir.join("objects");
 
         Ok(FileService {
             root_dir,
@@ -83,8 +83,8 @@ impl FileService {
 
     pub fn write_commit(&self, commit: &mut Commit) -> io::Result<()> {
         commit.update();
-        match commit {
-            &mut Commit {
+        match *commit {
+            Commit {
                 hash: Some(ref hash),
                 data: Some(ref data),
                 ..
@@ -101,7 +101,7 @@ impl FileService {
         Ok(())
     }
 
-    pub fn write_object(&self, hash: &str, data: &Vec<u8>) -> io::Result<()> {
+    pub fn write_object(&self, hash: &str, data: &[u8]) -> io::Result<()> {
         let blob_dir = self.object_dir.join(&hash[..2]);
         if !blob_dir.exists() {
             fs::create_dir(&blob_dir)?;
