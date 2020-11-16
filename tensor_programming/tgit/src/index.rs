@@ -4,7 +4,7 @@ use std::io;
 use std::io::{BufRead, BufReader, Write};
 use std::path::PathBuf;
 
-use super::error::TgitError;
+use crate::error::TgitError;
 
 pub struct Index {
     pub path: PathBuf,

@@ -5,8 +5,8 @@ use std::io;
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 
-use super::error::TgitError;
-use super::types::Blob;
+use crate::error::TgitError;
+use crate::types::Blob;
 
 pub struct FileService {
     pub root_dir: PathBuf,
@@ -49,7 +49,7 @@ impl FileService {
         let mut head_file = File::open(self.root_dir.join("tgit/HEAD"))?;
         let mut ref_path = String::new();
         head_file.read_to_string(&mut ref_path)?;
-        let ref_path = ref_path.split(6);
+        let ref_path = ref_path.split_off(6);
         Ok(self.tgit_dir.join(ref_path))
     }
 

@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::Write;
 use std::path::Path;
 
-use super::error::TgitError;
+use crate::error::TgitError;
 
 pub fn init() -> Result<(), TgitError> {
     let dir = Path::new(".tgit");
