@@ -6,6 +6,8 @@ use crypto::sha1::Sha1;
 use regex::Regex;
 
 use crate::error::TgitError;
+use crate::file::FileService;
+use crate::index::Index;
 
 pub struct Commit {
     pub hash: Option<String>,
@@ -31,6 +33,12 @@ impl Commit {
         };
 
         commit
+    }
+
+    pub fn add_from_index(&mut self, index: &Index) {
+        for (ref hash, ref path) in index.hashtree.iter() {
+            self.files.insert(hash.to_string(), path.to_ascii_lowercase());
+        }
     }
 
     pub fn from_string(hash: &str, input: &str) -> Result<Commit, TgitError> {
@@ -76,4 +84,26 @@ impl Commit {
         self.hash = Some(sha.result_str());
         self.data = Some(data);
     }
+}
+
+pub fn commit() -> Result<(), TgitError> {
+    let fs = FileService::new()?;
+    let head_ref = fs.get_head_ref()?;
+    let parent_hash = FileService::get_hash_from_ref(&head_ref);
+    let mut index = Index::new(&fs.root_dir)?;
+
+    let parent = match parent_hash {
+        Some(ref h) => Some(fs.read_commit(h)?),
+        None => None,
+    };
+
+    let mut commit = Commit::new(parent.as_ref());
+    parent.map(|p| p.print());
+    commit.add_from_index(&index);
+    commit.print();
+
+    fs.write_commit(&mut commit)?;
+    index.clear()?;
+
+    Ok(())
 }

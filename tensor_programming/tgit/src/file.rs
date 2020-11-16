@@ -5,6 +5,7 @@ use std::io;
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 
+use crate::commit::Commit;
 use crate::error::TgitError;
 use crate::types::Blob;
 
@@ -45,7 +46,7 @@ impl FileService {
         path.as_ref().join(".tgit").exists()
     }
 
-    pub fn get_head_erf(&self) -> io::Result<PathBuf> {
+    pub fn get_head_ref(&self) -> io::Result<PathBuf> {
         let mut head_file = File::open(self.root_dir.join("tgit/HEAD"))?;
         let mut ref_path = String::new();
         head_file.read_to_string(&mut ref_path)?;
@@ -53,8 +54,51 @@ impl FileService {
         Ok(self.tgit_dir.join(ref_path))
     }
 
+    pub fn get_hash_from_ref(ref_path: &PathBuf) -> Option<String> {
+        match File::open(ref_path) {
+            Ok(ref mut f) => {
+                let mut hash = String::new();
+                f.read_to_string(&mut hash).unwrap();
+                Some(hash)
+            }
+            Err(_) => None,
+        }
+    }
+
+    pub fn read_object(&self, hash: &str) -> io::Result<String> {
+        let mut data = String::new();
+        let object_filename = self.object_dir.join(&hash[..2]).join(&hash[2..]);
+        let mut object_file = File::open(&object_filename)?;
+        object_file.read_to_string(&mut data)?;
+        Ok(data)
+    }
+
     pub fn write_blob(&self, blob: &Blob) -> io::Result<()> {
         self.write_object(&blob.hash, &blob.data)
+    }
+
+    pub fn read_commit(&self, hash: &str) -> Result<Commit, TgitError> {
+        Commit::from_string(hash, &self.read_object(hash)?)
+    }
+
+    pub fn write_commit(&self, commit: &mut Commit) -> io::Result<()> {
+        commit.update();
+        match commit {
+            &mut Commit {
+                hash: Some(ref hash),
+                data: Some(ref data),
+                ..
+            } => {
+                self.write_object(hash, data)?;
+                let head = self.get_head_ref()?;
+                let mut head_file = File::create(&head)?;
+                head_file.write_all(hash.as_bytes())?;
+            }
+
+            _ => panic!("Commit should have data and hash"),
+        }
+
+        Ok(())
     }
 
     pub fn write_object(&self, hash: &str, data: &Vec<u8>) -> io::Result<()> {

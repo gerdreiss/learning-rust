@@ -21,6 +21,7 @@ fn main() {
                                  .required(true),
                         ),
         )
+        .subcommand(SubCommand::with_name("commit").about("Commits a change"))
         .get_matches();
 
     match m.subcommand() {
@@ -33,6 +34,12 @@ fn main() {
         ("add", Some(submatches)) => {
             let file_names = &submatches.values_of("file").unwrap().collect();
             match add::add_all(file_names) {
+                Ok(()) => (),
+                Err(e) => println!("Error: {}", e),
+            }
+        }
+        ("commit", Some(..)) => {
+            match commit::commit() {
                 Ok(()) => (),
                 Err(e) => println!("Error: {}", e),
             }
