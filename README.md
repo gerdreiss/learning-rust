@@ -10,3 +10,5 @@
     * [Rust Lifetimes](https://www.youtube.com/watch?v=1QoT9fmPYr8)
 * Tensor Programming
     * [Building a Git Command Line Tool](https://www.youtube.com/watch?v=mVuq8IkfkiY)
+* Microsoft Reactor
+    * [Moving Beyond "Hello World"](https://www.youtube.com/watch?v=5dRT_v3hrZ0)
