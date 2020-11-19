@@ -12,3 +12,4 @@
     * [Building a Git Command Line Tool](https://www.youtube.com/watch?v=mVuq8IkfkiY)
 * Microsoft Reactor
     * [Moving Beyond "Hello World"](https://www.youtube.com/watch?v=5dRT_v3hrZ0)
+* Rust [Command Line Book](https://rust-cli.github.io/book/index.html)
