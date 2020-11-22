@@ -1,5 +1,6 @@
+use std::io;
 use std::io::Read;
-use std::net::TcpListener;
+use std::net::{SocketAddr, TcpListener, TcpStream};
 
 pub struct Server {
     addr: String,
@@ -13,26 +14,28 @@ impl Server {
         println!("Listening on {}", &self.addr);
         let listener = TcpListener::bind(&self.addr).unwrap();
         loop {
-            match listener.accept() {
-                Err(err) => {
-                    eprintln!("Failed to establish connection: {}", err);
-                    continue;
-                }
-                Ok((mut stream, addr)) => {
-                    println!("Request received from {}", addr);
-                    let mut buf = Vec::new();
-                    match stream.read_to_end(&mut buf) {
-                        Err(err) => {
-                            eprintln!("Failed to read from connection: {}", err);
-                            continue;
-                        }
-                        Ok(_) => {
-                            let req = String::from_utf8_lossy(buf.as_mut_slice());
-                            println!("Request received: {}", req)
-                        }
-                    }
-                }
-            }
+            listener
+                .accept()
+                .and_then(|(mut stream, addr)| self.process_request(addr, &mut stream));
+
+            // match listener.accept() {
+            //     Err(err) => eprintln!("Failed to establish connection: {}", err),
+            //     Ok((mut stream, addr)) => process_request(addr, &mut stream)
+            // }
         }
+    }
+
+    fn process_request(&self, addr: SocketAddr, stream: &mut TcpStream) -> io::Result<()> {
+        println!("Request received from {}", addr);
+
+        let mut buf = Vec::new();
+
+        stream
+            .read_to_end(&mut buf)
+            .and_then(|_| {
+                let req = String::from_utf8_lossy(buf.as_mut_slice());
+                println!("Request received: {}", req);
+                Ok(())
+            })
     }
 }
