@@ -1,8 +1,6 @@
 use std::convert::TryFrom;
-use std::convert::TryInto;
-use std::io;
 use std::io::Read;
-use std::net::{SocketAddr, TcpListener, TcpStream};
+use std::net::TcpListener;
 
 use crate::http::HttpRequest;
 
@@ -14,6 +12,7 @@ impl Server {
     pub fn new(addr: String) -> Self {
         Self { addr }
     }
+
     pub fn run(&self) {
         println!("Listening on {}", &self.addr);
         let listener = TcpListener::bind(&self.addr).unwrap();
@@ -24,17 +23,12 @@ impl Server {
                     println!("Request received from {}", addr);
                     let mut buf = Vec::new();
                     match stream.read_to_end(&mut buf) {
-                        Err(err) => eprintln!("Failed to read from stream: {}", err),
-                        Ok(size) => {
-                            if size == 0 {
-                                eprintln!("Empty request (?)");
-                            } else {
-                                match HttpRequest::try_from(buf.as_slice()) {
-                                    Err(err) => println!("Failed to parse request: {}", err),
-                                    Ok(req) => println!("Request received: {:?}", req),
-                                }
-                            }
-                        }
+                        Err(e) => eprintln!("Failed to read from stream: {}", e),
+                        Ok(0) => eprintln!("Empty request (?)"), // is this even possible?
+                        Ok(_) => match HttpRequest::try_from(buf.as_slice()) {
+                            Err(err) => println!("Failed to parse request: {}", err),
+                            Ok(req) => println!("Request received: {:?}", req),
+                        },
                     }
                 }
             }
