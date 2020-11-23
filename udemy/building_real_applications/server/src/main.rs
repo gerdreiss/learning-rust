@@ -1,8 +1,7 @@
-use http::HttpMethod;
-use http::HttpRequest;
 use server::Server;
 
 mod http;
+mod parse;
 mod server;
 
 fn main() {
