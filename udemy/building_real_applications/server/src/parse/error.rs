@@ -9,6 +9,7 @@ pub enum ParseError {
     InvalidEncoding,
     InvalidProtocol,
     InvalidMethod,
+    InvalidQuery,
 }
 
 impl ParseError {
@@ -18,6 +19,7 @@ impl ParseError {
             ParseError::InvalidEncoding => "Invalid encoding",
             ParseError::InvalidProtocol => "Invalid protocol",
             ParseError::InvalidMethod => "Invalid method",
+            ParseError::InvalidQuery => "Invalid query",
         }
     }
 }

@@ -1,3 +1,4 @@
+use crate::http::QueryString;
 use std::convert::TryFrom;
 use std::str;
 
@@ -7,7 +8,7 @@ use crate::parse::error::ParseError;
 #[derive(Debug)]
 pub struct HttpRequest<'buf> {
     path: &'buf str,
-    query: Option<&'buf str>,
+    query: Option<QueryString<'buf>>,
     method: HttpMethod,
 }
 
@@ -25,8 +26,14 @@ impl<'buf> TryFrom<&'buf [u8]> for HttpRequest<'buf> {
         let (path, query) = split
             .next()
             .filter(|p| p.starts_with("/")) // the path must start with "/"
-            .map(|p| p.split('?'))
+            .map(|p| p.splitn(2, '?')) // split into exactly two chunks: path and query (if any)
             .map(|mut s| (s.next(), s.next()))
+            .map(|(maybe_path, maybe_query)| {
+                (
+                    maybe_path,
+                    maybe_query.and_then(|q| QueryString::try_from(q).ok()),
+                )
+            })
             .and_then(|(maybe_path, maybe_query)| maybe_path.map(|p| (p, maybe_query)))
             .ok_or(ParseError::InvalidRequest)?;
 
@@ -37,9 +44,9 @@ impl<'buf> TryFrom<&'buf [u8]> for HttpRequest<'buf> {
             .ok_or(ParseError::InvalidProtocol)?;
 
         Ok(Self {
-            path: path,
-            query: query,
-            method: method,
+            path,
+            query,
+            method,
         })
     }
 }
