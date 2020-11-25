@@ -37,7 +37,7 @@ impl<'buf> TryFrom<&'buf [u8]> for HttpRequest<'buf> {
             .and_then(|(maybe_path, maybe_query)| maybe_path.map(|p| (p, maybe_query)))
             .ok_or(ParseError::InvalidRequest)?;
 
-        let protocol = split
+        let _protocol = split
             .next()
             .and_then(|s| s.split('\r').next())
             .filter(|s| s.starts_with("HTTP/1.1")) // we accept only HTTP requests

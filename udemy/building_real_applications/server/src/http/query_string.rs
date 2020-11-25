@@ -14,6 +14,7 @@ pub enum Value<'buf> {
 }
 
 impl<'buf> QueryString<'buf> {
+    #[allow(dead_code)]
     pub fn get(&self, key: &str) -> Option<&Value> {
         self.data.get(key)
     }

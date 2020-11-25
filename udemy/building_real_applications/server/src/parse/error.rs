@@ -4,6 +4,7 @@ use std::fmt::{Display, Formatter, Result as FmtResult};
 use std::str::Utf8Error;
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum ParseError {
     InvalidRequest,
     InvalidEncoding,

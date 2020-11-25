@@ -20,8 +20,7 @@ impl HttpResponse {
             self.status_code,
             self.status_code.reason_phrase(),
             self.body.as_ref().unwrap_or(&String::new()),
-        );
-        stream.flush()
+        )
     }
 }
 
