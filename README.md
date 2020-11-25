@@ -12,5 +12,8 @@
     * [Building a Git Command Line Tool](https://www.youtube.com/watch?v=mVuq8IkfkiY)
 * Microsoft Reactor
     * [Moving Beyond "Hello World"](https://www.youtube.com/watch?v=5dRT_v3hrZ0)
-* Rust [Command Line Book](https://rust-cli.github.io/book/index.html)
-* Udemy [Learn Rust by Building Real Application](https://udemy.com/course/rust-fundamentals)
+* Rust 
+    * [Command Line Book](https://rust-cli.github.io/book/index.html)
+* Udemy 
+    * [Learn Rust by Building Real Application](https://udemy.com/course/rust-fundamentals)
+    * [Hands-On Data Structures and Algorithms in Rust](https://www.udemy.com/course/hands-on-data-structures-and-algorithms-in-rust)
