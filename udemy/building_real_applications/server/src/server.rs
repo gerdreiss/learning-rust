@@ -45,7 +45,10 @@ impl Server {
                                     println!("Request object: {:?}", req);
                                     HttpResponse::new(
                                         StatusCode::OK,
-                                        Some("<h1>IT WORKS!</h1>".to_owned()),
+                                        Some(
+                                            "<br/><br/><center><h1>IT WORKS!</h1></center>"
+                                                .to_owned(),
+                                        ),
                                     )
                                 }
                             }
