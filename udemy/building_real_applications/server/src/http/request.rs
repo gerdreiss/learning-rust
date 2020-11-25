@@ -12,6 +12,18 @@ pub struct HttpRequest<'buf> {
     method: HttpMethod,
 }
 
+impl<'buf> HttpRequest<'buf> {
+    pub fn path(&self) -> &'buf str {
+        &self.path
+    }
+    pub fn method(&self) -> &HttpMethod {
+        &self.method
+    }
+    pub fn query(&self) -> Option<&QueryString> {
+        self.query.as_ref()
+    }
+}
+
 impl<'buf> TryFrom<&'buf [u8]> for HttpRequest<'buf> {
     type Error = ParseError;
 
