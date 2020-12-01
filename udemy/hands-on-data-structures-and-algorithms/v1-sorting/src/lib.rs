@@ -1,5 +1,7 @@
 use std::fmt::Debug;
 
+mod b_rand;
+
 // O(n^2)
 pub fn bubble_sort<T: PartialOrd + Debug>(v: &mut [T]) {
     for p in 0..v.len() {
@@ -66,6 +68,33 @@ pub fn merge_sort<T: PartialOrd + Debug>(mut v: Vec<T>) -> Vec<T> {
     }
 }
 
+pub fn pivot<T: PartialOrd>(v: &mut [T]) -> usize {
+    let mut p = b_rand::rand(v.len());
+    v.swap(p, 0);
+    p = 0;
+    for i in 1..v.len() {
+        if v[i] < v[p] {
+            // move our pivot forward 1, and put this element before it
+            v.swap(p + 1, i);
+            v.swap(p, p + 1);
+            p += 1
+        }
+    }
+    p
+}
+
+pub fn quick_sort<T: PartialOrd + Debug>(v: &mut [T]) {
+    if v.len() <= 1 {
+        return;
+    }
+    let p = pivot(v);
+    println!("{:?}", v);
+
+    let (a, b) = v.split_at_mut(p);
+    quick_sort(a);
+    quick_sort(&mut b[1..]);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -80,5 +109,20 @@ mod tests {
         let v = vec![10, 2, 3, 4, 12, 1];
         let sorted = merge_sort(v);
         assert_eq!(sorted, vec![1, 2, 3, 4, 10, 12]);
+    }
+    #[test]
+    fn test_pivot() {
+        let mut v = vec![4, 2, 3, 6, 76];
+        let p = pivot(&mut v);
+        for x in 0..v.len() {
+            assert!((v[x] < v[p]) == (x < p));
+        }
+        assert_eq!(v, vec![2, 3, 4, 6, 76])
+    }
+    #[test]
+    fn test_quick_sort() {
+        let mut v = vec![4, 2, 3, 6, 76];
+        quick_sort(&mut v);
+        assert_eq!(v, vec![2, 3, 4, 6, 76])
     }
 }
