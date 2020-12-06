@@ -1,6 +1,6 @@
+use crossbeam::channel::Receiver;
 use std::fs::File;
 use std::io::{self, BufWriter, ErrorKind, Result, Write};
-use std::sync::mpsc::Receiver;
 
 pub fn write(outfile: &str, buffer: &[u8]) -> Result<bool> {
     let mut writer: Box<dyn Write> = if outfile.is_empty() {
