@@ -1,3 +1,5 @@
+mod timer;
+
 use crossbeam::channel::Receiver;
 use crossterm::{
     cursor, execute,
@@ -5,36 +7,8 @@ use crossterm::{
     terminal::{Clear, ClearType},
 };
 use std::io::{self, Result, Stderr, Write};
-use std::time::{Duration, Instant};
-
-struct Timer {
-    last_instant: Instant,
-    delta: Duration,
-    period: Duration,
-    countdown: Duration,
-    ready: bool,
-}
-
-impl Timer {
-    fn new() -> Self {
-        Self {
-            last_instant: Instant::now(),
-            delta: Duration::default(),
-            period: Duration::from_millis(1000),
-            countdown: Duration::default(),
-            ready: true,
-        }
-    }
-    fn update(&mut self) {
-        let now = Instant::now();
-        self.delta = now - self.last_instant;
-        self.last_instant = now;
-        self.countdown = self.countdown.checked_sub(self.delta).unwrap_or_else(|| {
-            self.ready = true;
-            self.period
-        })
-    }
-}
+use std::time::Instant;
+use timer::Timer;
 
 trait TimeOutput {
     fn as_time(&self) -> String;
