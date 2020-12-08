@@ -8,19 +8,7 @@ use crossterm::{
 };
 use std::io::{self, Result, Stderr, Write};
 use std::time::Instant;
-use timer::Timer;
-
-trait TimeOutput {
-    fn as_time(&self) -> String;
-}
-
-impl TimeOutput for u64 {
-    fn as_time(&self) -> String {
-        let (hours, left) = (*self / 3600, *self % 3600);
-        let (minutes, seconds) = (self / 60, left % 60);
-        format!("Time: {}:{:02}:{:02}; ", hours, minutes, seconds)
-    }
-}
+use timer::{TimeOutput, Timer};
 
 pub fn stats(verbose: bool, total_bytes: usize, last: bool) {
     if verbose {
