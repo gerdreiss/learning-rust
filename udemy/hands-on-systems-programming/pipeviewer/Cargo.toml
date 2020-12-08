@@ -1,8 +1,15 @@
 [package]
 name = "pipeviewer"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Gerd Reiss <gerd@reiss.pro>"]
 edition = "2018"
+description = "Educational versino of the pv utility"
+homepage = "https://github.com/gerdreiss/learning-rust"
+repository = "https://github.com/gerdreiss/learning-rust"
+readme = "README.md"
+keywords = ["educational"]
+categories = ["command-line-utilities"]
+license = "MIT OR Apache License, Version 2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
