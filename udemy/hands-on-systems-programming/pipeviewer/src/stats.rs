@@ -1,4 +1,9 @@
-mod timer;
+//! The stats module cnotains the stats loop
+//!
+//! # Some header
+//! More discussion!
+
+pub mod timer;
 
 use crossbeam::channel::Receiver;
 use crossterm::{
