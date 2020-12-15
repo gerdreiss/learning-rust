@@ -18,4 +18,5 @@
     * [Learn Rust by Building Real Application](https://udemy.com/course/rust-fundamentals)
     * [Hands-On Data Structures and Algorithms in Rust](https://www.udemy.com/course/hands-on-data-structures-and-algorithms-in-rust)
     * [Hands-On Systems Programming with Rust](https://www.udemy.com/course/hands-on-systems-programming-with-rust/)
+    * [Rust Programming Recipes](https://www.udemy.com/course/rust-programming-recipes)
 * [Exercism](https://exercism.io/profiles/gerdreiss)
