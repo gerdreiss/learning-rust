@@ -1,0 +1,25 @@
+[package]
+name = "d3_lifetimes"
+version = "0.1.0"
+authors = ["Gerd Reiss <gerd@reiss.pro>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "v1_lifetime"
+path = "src/main.rs"
+
+[[bin]]
+name = "v2_closure"
+path = "src/v2_closure.rs"
+
+[[bin]]
+name = "v3_rc"
+path = "src/v3_rc.rs"
+
+[[bin]]
+name = "v4_channels"
+path = "src/v4_channels.rs"
+
+[dependencies]

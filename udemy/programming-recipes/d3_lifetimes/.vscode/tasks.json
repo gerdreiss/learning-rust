@@ -1,0 +1,53 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cargo",
+			"subcommand": "check",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"label": "Rust: cargo check - d3_lifetimes"
+		},
+		{
+			"type": "cargo",
+			"subcommand": "build",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"label": "Rust: cargo build - d3_lifetimes"
+		},
+		{
+			"type": "shell",
+			"command": "cargo",
+			"args": ["run", "--bin", "v2_closure"],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"label": "Rust: cargo run --bin v2_closure"
+		},
+		{
+			"type": "shell",
+			"command": "cargo",
+			"args": ["run", "--bin", "v3_rc"],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"label": "Rust: cargo run --bin v3_rc"
+		},
+		{
+			"type": "shell",
+			"command": "cargo",
+			"args": ["run", "--bin", "v4_channels"],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"label": "Rust: cargo run --bin v4_channels"
+		}
+	]
+}
