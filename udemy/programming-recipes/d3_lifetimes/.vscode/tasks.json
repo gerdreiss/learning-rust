@@ -49,5 +49,16 @@
 			"group": "build",
 			"label": "Rust: cargo run --bin v4_channels"
 		}
+		},
+		{
+			"type": "shell",
+			"command": "cargo",
+			"args": ["run", "--bin", "v5_pool"],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"label": "Rust: cargo run --bin v5_pool"
+		}
 	]
 }

@@ -26,6 +26,7 @@ pub fn with_arc() {
 pub fn with_channels() {
     let (ch_s, ch_r) = std::sync::mpsc::channel::<Box<dyn Fn(&mut String) + Send>>();
     let (done_s, done_r) = std::sync::mpsc::channel::<()>();
+
     std::thread::spawn(move || {
         let mut hidden = String::new();
         loop {
@@ -50,7 +51,7 @@ pub fn with_channels() {
 
     let ch_2 = ch_s.clone();
 
-    ch_s.send(Box::new(|s: &mut String| {
+    ch_2.send(Box::new(|s: &mut String| {
         s.push_str(" world");
     }))
     .unwrap();
@@ -58,7 +59,7 @@ pub fn with_channels() {
     drop(ch_s);
     drop(ch_2);
 
-    done_r.recv().ok();
+    done_r.recv().unwrap();
 
     //std::thread::sleep(Duration::from_millis(1000));
 }
