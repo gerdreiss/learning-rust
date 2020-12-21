@@ -35,7 +35,7 @@ pub fn with_channels() {
                     println!("hidden = {}", hidden);
                 }
                 Err(e) => {
-                    println!("Done");
+                    println!("Done with {}", e);
                     done_s.send(()).unwrap();
                     return;
                 }
