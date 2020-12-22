@@ -19,4 +19,6 @@
     * [Hands-On Data Structures and Algorithms in Rust](https://www.udemy.com/course/hands-on-data-structures-and-algorithms-in-rust)
     * [Hands-On Systems Programming with Rust](https://www.udemy.com/course/hands-on-systems-programming-with-rust/)
     * [Rust Programming Recipes](https://www.udemy.com/course/rust-programming-recipes)
+* Tsoding
+    * [AoC 2020 - Day 10: Adapter Array](https://www.youtube.com/watch?v=LjrCckaHjB0)
 * [Exercism](https://exercism.io/profiles/gerdreiss)
