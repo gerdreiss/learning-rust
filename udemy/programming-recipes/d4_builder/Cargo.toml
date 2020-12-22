@@ -1,5 +1,5 @@
 [package]
-name = "adapter_array"
+name = "d4_builder"
 version = "0.1.0"
 authors = ["Gerd Reiss <gerd@reiss.pro>"]
 edition = "2018"
