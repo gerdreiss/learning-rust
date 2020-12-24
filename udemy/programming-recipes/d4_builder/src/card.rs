@@ -54,7 +54,7 @@ impl Triggerable for Card {
 }
 
 pub struct TriggerWrap<A: Triggerable, B: Triggerable> {
-    a: B,
+    a: A,
     b: B,
 }
 
@@ -108,7 +108,7 @@ mod test_builder {
     pub fn test_card_builder() {
         let given = Card::builder("General Blight".to_string())
             .strength(4)
-            .trigger(Trigger::BattleCry, "Deal 2 Damage")
+            .trigger(Trigger::BattleCry, "Deal 2 Damage".to_string())
             .build();
 
         let mut triggers = BTreeMap::new();
