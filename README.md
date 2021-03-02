@@ -22,3 +22,5 @@
 * Tsoding
     * [AoC 2020 - Day 10: Adapter Array](https://www.youtube.com/watch?v=LjrCckaHjB0)
 * [Exercism](https://exercism.io/profiles/gerdreiss)
+* [David Pedersen](https://www.youtube.com/channel/UCDmSWx6SK0zCU2NqPJ0VmDQ)
+    * 	[Educational Rust live coding - Building a web app - Part 1](https://www.youtube.com/watch?v=yNe9Xr35n4Q)
