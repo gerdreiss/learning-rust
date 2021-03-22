@@ -24,3 +24,5 @@
 * [Exercism](https://exercism.io/profiles/gerdreiss)
 * [David Pedersen](https://www.youtube.com/channel/UCDmSWx6SK0zCU2NqPJ0VmDQ)
     * 	[Educational Rust live coding - Building a web app - Part 1](https://www.youtube.com/watch?v=yNe9Xr35n4Q)
+* [Rust Design Patterns](https://rust-unofficial.github.io/patterns/)
+

@@ -1,0 +1,9 @@
+[package]
+authors = ["Gerd Reiss <gerd@reiss.pro>"]
+edition = "2018"
+name = "rust_design_patterns"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
