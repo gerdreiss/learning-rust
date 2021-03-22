@@ -1,6 +1,7 @@
 use crate::three_vowels::three_vowels;
 use crate::three_vowels::three_vowels_functional;
 
+mod defaults;
 mod three_vowels;
 
 fn main() {
@@ -19,4 +20,10 @@ fn main() {
     // This works fine, but the following two lines would fail:
     // println!("Ferris: {}", three_vowels("Ferris"));
     // println!("Curious: {}", three_vowels("Curious"));
+
+    // construct a new instance with default values
+    let conf = defaults::MyConfiguration::default();
+    // do something with conf here
+    // conf.set_check(true);
+    println!("conf = {:#?}", conf);
 }
