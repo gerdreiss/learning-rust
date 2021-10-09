@@ -13,7 +13,37 @@ enum Action<T, U> {
     Handle(U),
 }
 
-fn generate_tree(level: usize, counter: &mut i32) -> NodeRef<i32> {
+fn generate_tree_nonrec(level: usize) -> NodeRef<i32> {
+    let mut counter = 1;
+    let mut arg_stack = Vec::<Action<usize, i32>>::new();
+    let mut ret_stack = Vec::<NodeRef<i32>>::new();
+
+    arg_stack.push(Action::Call(level));
+    while let Some(action) = arg_stack.pop() {
+        match action {
+            Action::Call(level) => {
+                if level > 0 {
+                    arg_stack.push(Action::Handle(counter));
+                    counter += 1;
+                    arg_stack.push(Action::Call(level - 1));
+                    arg_stack.push(Action::Call(level - 1));
+                } else {
+                    ret_stack.push(None);
+                }
+            }
+            Action::Handle(value) => {
+                let left = ret_stack.pop().unwrap();
+                let right = ret_stack.pop().unwrap();
+                ret_stack.push(Some(Box::new(Node { value, left, right })));
+            }
+        }
+    }
+
+    ret_stack.pop().unwrap()
+}
+
+#[allow(dead_code)]
+fn generate_tree_rec(level: usize, counter: &mut i32) -> NodeRef<i32> {
     if level == 0 {
         None
     } else {
@@ -23,8 +53,8 @@ fn generate_tree(level: usize, counter: &mut i32) -> NodeRef<i32> {
             right: None,
         };
         *counter += 1;
-        node.left = generate_tree(level - 1, counter);
-        node.right = generate_tree(level - 1, counter);
+        node.left = generate_tree_rec(level - 1, counter);
+        node.right = generate_tree_rec(level - 1, counter);
         Some(Box::new(node))
     }
 }
@@ -108,8 +138,7 @@ fn invert_tree_rec<T: Clone>(root: &NodeRef<T>) -> NodeRef<T> {
 }
 
 fn main() {
-    let mut counter = 1;
-    let tree = generate_tree(4, &mut counter);
+    let tree = generate_tree_nonrec(4);
     print_tree_nonrec(&tree);
     println!("--------------------------");
     print_tree_nonrec(&invert_tree_nonrec(&tree));
