@@ -22,6 +22,7 @@
 * [Tsoding](https://www.youtube.com/channel/UCEbYhDd6c6vngsF5PQpFVWg)
     * [AoC 2020 - Day 10: Adapter Array](https://www.youtube.com/watch?v=LjrCckaHjB0)
     * [Roguelike game in Rust](https://www.twitch.tv/videos/971369987)
+    * [Inverting Binary Tree](https://www.twitch.tv/videos/1169118622)
 * [Exercism](https://exercism.io/profiles/gerdreiss)
 * [David Pedersen](https://www.youtube.com/channel/UCDmSWx6SK0zCU2NqPJ0VmDQ)
     * [Educational Rust live coding - Building a web app - Part 1](https://www.youtube.com/watch?v=yNe9Xr35n4Q)
