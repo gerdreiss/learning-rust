@@ -1,5 +1,3 @@
-use std::fmt::Display;
-
 type NodeRef<T> = Option<Box<Node<T>>>;
 
 #[derive(Debug, Default, Clone)]
@@ -7,6 +5,11 @@ struct Node<T> {
     value: T,
     left: NodeRef<T>,
     right: NodeRef<T>,
+}
+
+enum Action<'a, T> {
+    Call(&'a NodeRef<T>, usize),
+    Print(&'a T, usize),
 }
 
 fn generate_tree(level: usize, counter: &mut i32) -> NodeRef<i32> {
@@ -25,17 +28,36 @@ fn generate_tree(level: usize, counter: &mut i32) -> NodeRef<i32> {
     }
 }
 
-fn print_tree<T: Display>(root: NodeRef<T>, level: usize) {
-    match root {
-        Some(node) => {
-            print_tree(node.left, level + 1);
-            for _ in 0..level {
-                print!("    ")
+fn print_tree_nonrec<T: std::fmt::Display>(root: &NodeRef<T>) {
+    let mut stack = Vec::<Action<T>>::new();
+    stack.push(Action::Call(root, 0));
+    while let Some(action) = stack.pop() {
+        match action {
+            Action::Call(root, level) => {
+                if let Some(node) = root {
+                    stack.push(Action::Call(&node.left, level + 1));
+                    stack.push(Action::Print(&node.value, level));
+                    stack.push(Action::Call(&node.right, level + 1));
+                }
             }
-            println!("{: }", node.value);
-            print_tree(node.right, level + 1);
+            Action::Print(value, level) => {
+                for _ in 0..level {
+                    print!("    ")
+                }
+                println!("{}", value);
+            }
         }
-        None => (),
+    }
+}
+
+fn print_tree<T: std::fmt::Display>(root: &NodeRef<T>, level: usize) {
+    if let Some(node) = root {
+        print_tree(&node.left, level + 1);
+        for _ in 0..level {
+            print!("    ")
+        }
+        println!("{}", node.value);
+        print_tree(&node.right, level + 1);
     }
 }
 
@@ -52,7 +74,7 @@ fn invert_tree<T: Clone>(root: NodeRef<T>) -> NodeRef<T> {
 fn main() {
     let mut counter = 1;
     let tree = generate_tree(4, &mut counter);
-    print_tree(tree.clone(), 0);
+    print_tree_nonrec(&tree);
     println!("--------------------------");
-    print_tree(invert_tree(tree), 0);
+    print_tree_nonrec(&invert_tree(tree));
 }
