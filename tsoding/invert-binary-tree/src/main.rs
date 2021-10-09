@@ -7,6 +7,7 @@ struct Node<T> {
     right: NodeRef<T>,
 }
 
+#[derive(Debug)]
 enum Action<T, U> {
     Call(T),
     Handle(U),
@@ -50,25 +51,60 @@ fn print_tree_nonrec<T: std::fmt::Display>(root: &NodeRef<T>) {
     }
 }
 
-fn print_tree<T: std::fmt::Display>(root: &NodeRef<T>, level: usize) {
+#[allow(dead_code)]
+fn print_tree_rec<T: std::fmt::Display>(root: &NodeRef<T>, level: usize) {
     if let Some(node) = root {
-        print_tree(&node.left, level + 1);
+        print_tree_rec(&node.left, level + 1);
         for _ in 0..level {
             print!("    ")
         }
         println!("{}", node.value);
-        print_tree(&node.right, level + 1);
+        print_tree_rec(&node.right, level + 1);
     }
 }
 
-fn invert_tree<T: Clone>(root: NodeRef<T>) -> NodeRef<T> {
-    root.map(|node| {
-        Box::new(Node {
+fn invert_tree_nonrec<T: Clone>(root: &NodeRef<T>) -> NodeRef<T> {
+    let mut arg_stack = Vec::<Action<&NodeRef<T>, &T>>::new();
+    let mut ret_stack = Vec::<NodeRef<T>>::new();
+
+    arg_stack.push(Action::Call(root));
+    while let Some(action) = arg_stack.pop() {
+        match action {
+            Action::Call(root) => {
+                if let Some(node) = root {
+                    arg_stack.push(Action::Handle(&node.value));
+                    arg_stack.push(Action::Call(&node.right));
+                    arg_stack.push(Action::Call(&node.left));
+                } else {
+                    ret_stack.push(None);
+                }
+            }
+            Action::Handle(value) => {
+                let left = ret_stack.pop().unwrap();
+                let right = ret_stack.pop().unwrap();
+                ret_stack.push(Some(Box::new(Node {
+                    value: value.clone(),
+                    left,
+                    right,
+                })));
+            }
+        }
+    }
+
+    ret_stack.pop().unwrap()
+}
+
+#[allow(dead_code)]
+fn invert_tree_rec<T: Clone>(root: &NodeRef<T>) -> NodeRef<T> {
+    if let Some(node) = root {
+        Some(Box::new(Node {
             value: node.value.clone(),
-            left: invert_tree(node.right),
-            right: invert_tree(node.left),
-        })
-    })
+            left: invert_tree_rec(&node.right),
+            right: invert_tree_rec(&node.left),
+        }))
+    } else {
+        None
+    }
 }
 
 fn main() {
@@ -76,5 +112,5 @@ fn main() {
     let tree = generate_tree(4, &mut counter);
     print_tree_nonrec(&tree);
     println!("--------------------------");
-    print_tree_nonrec(&invert_tree(tree));
+    print_tree_nonrec(&invert_tree_nonrec(&tree));
 }
