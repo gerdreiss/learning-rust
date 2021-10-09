@@ -7,9 +7,9 @@ struct Node<T> {
     right: NodeRef<T>,
 }
 
-enum Action<'a, T> {
-    Call(&'a NodeRef<T>, usize),
-    Print(&'a T, usize),
+enum Action<T, U> {
+    Call(T),
+    Handle(U),
 }
 
 fn generate_tree(level: usize, counter: &mut i32) -> NodeRef<i32> {
@@ -29,18 +29,18 @@ fn generate_tree(level: usize, counter: &mut i32) -> NodeRef<i32> {
 }
 
 fn print_tree_nonrec<T: std::fmt::Display>(root: &NodeRef<T>) {
-    let mut stack = Vec::<Action<T>>::new();
-    stack.push(Action::Call(root, 0));
+    let mut stack = Vec::<Action<(&NodeRef<T>, usize), (&T, usize)>>::new();
+    stack.push(Action::Call((root, 0)));
     while let Some(action) = stack.pop() {
         match action {
-            Action::Call(root, level) => {
+            Action::Call((root, level)) => {
                 if let Some(node) = root {
-                    stack.push(Action::Call(&node.left, level + 1));
-                    stack.push(Action::Print(&node.value, level));
-                    stack.push(Action::Call(&node.right, level + 1));
+                    stack.push(Action::Call((&node.left, level + 1)));
+                    stack.push(Action::Handle((&node.value, level)));
+                    stack.push(Action::Call((&node.right, level + 1)));
                 }
             }
-            Action::Print(value, level) => {
+            Action::Handle((value, level)) => {
                 for _ in 0..level {
                     print!("    ")
                 }
