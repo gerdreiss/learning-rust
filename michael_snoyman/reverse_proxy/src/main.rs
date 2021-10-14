@@ -17,10 +17,11 @@ fn mutate_request(req: &mut Request<Body>) -> Result<()> {
         req.headers_mut().remove(key);
     }
     let uri = req.uri();
-    let uri_string = match uri.query() {
-        None => format!("https://www.snoyman.com{}", uri.path()),
-        Some(query) => format!("https://www.snoyman.com{}?{}", uri.path(), query),
-    };
+    let uri_string = format!(
+        "https://www.snoyman.com{}?{}",
+        uri.path(),
+        uri.query().unwrap_or("")
+    );
     *req.uri_mut() = uri_string
         .parse()
         .context("Parsing URI in mutate_request")?;
