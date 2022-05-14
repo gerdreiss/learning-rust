@@ -28,6 +28,7 @@
     * [Educational Rust live coding - Building a web app - Part 1](https://www.youtube.com/watch?v=yNe9Xr35n4Q)
 * [Jon Gjengset](https://www.youtube.com/channel/UC_iD0xppBwwsrM9DegC5cQQ)
     * [Lifetime Annotations](https://www.youtube.com/watch?v=rAl-9HwD858)
+    * [Implementing and Optimizing a Wordle Solver in Rust](https://youtu.be/doFowk4xj7Q)
 * [Manning Publications](https://www.youtube.com/channel/UCDia_lkNYKLJVLRLQl_-pFw)
     * [Creating a Chat Server with async Rust and Tokio](https://www.youtube.com/watch?v=4DqP57BHaXI)
 * [Michael Snoyman](https://www.youtube.com/channel/UChM99YoXThrguYsFkukiOsQ)
