@@ -1,16 +1,29 @@
-fn main() {
-    let mut x;
-    // this access would be illegal, nowhere to draw the flow from:
-    // assert_eq!(x, 42);
-    x = 42;
-    // this is okay, can draw a flow from the value assigned above:
-    let y = &x;
-    // this establishes a second, mutable flow from x:
-    x = 43;
-    // this continues the flow from y, which in turn draws from x.
-    // but that flow conflicts with the assignment to x!
-    // assert_eq!(*y, 42);
+struct StrSplit<'s, 'p> {
+    delimiter: &'p str,
+    document: &'s str,
+}
 
-    // println!("{}", x);
-    // println!("{}", y);
+impl<'s, 'p> Iterator for StrSplit<'s, 'p> {
+    type Item = &'s str;
+    fn next(&mut self) -> Option<Self::Item> {
+        if let Some(index) = self.document.find(self.delimiter) {
+            let (first, second) = self.document.split_at(index);
+            self.document = &second[self.delimiter.len()..];
+            Some(first)
+        } else {
+            None
+        }
+    }
+}
+
+fn str_before(s: &str, c: char) -> Option<&str> {
+    StrSplit {
+        document: s,
+        delimiter: &c.to_string(),
+    }
+    .next()
+}
+
+fn main() {
+    println!("{:?}", str_before("hello world", ' '));
 }
