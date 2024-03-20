@@ -19,6 +19,7 @@
     * [Hands-On Data Structures and Algorithms in Rust](https://www.udemy.com/course/hands-on-data-structures-and-algorithms-in-rust)
     * [Hands-On Systems Programming with Rust](https://www.udemy.com/course/hands-on-systems-programming-with-rust/)
     * [Rust Programming Recipes](https://www.udemy.com/course/rust-programming-recipes)
+    * [Rust Programming Course: From Beginner to Expert 2.0](https://www.udemy.com/course/rust-programming-master-class-from-beginner-to-expert/)
 * [Tsoding](https://www.youtube.com/channel/UCEbYhDd6c6vngsF5PQpFVWg)
     * [AoC 2020 - Day 10: Adapter Array](https://www.youtube.com/watch?v=LjrCckaHjB0)
     * [Roguelike game in Rust](https://www.twitch.tv/videos/971369987)
