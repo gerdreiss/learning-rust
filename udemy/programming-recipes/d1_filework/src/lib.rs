@@ -54,11 +54,19 @@ pub fn get_transactions(fname: &str) -> Result<Vec<Transaction>, TransactionErro
 }
 
 pub fn get_first_transaction(fname: &str, uname: &str) -> Result<Transaction, failure::Error> {
-    let transactions = get_transactions(fname)?; // Result -> Option
-    for t in transactions {
-        if t.from == uname {
-            return Ok(t);
-        }
-    }
-    Err(TransactionError::Msg("Could not find transaction").into())
+    // Variant 1:
+    // let transactions = get_transactions(fname)?; // Result -> Option
+    // for t in transactions {
+    //     if t.from == uname {
+    //         return Ok(t);
+    //     }
+    // }
+    // Err(TransactionError::Msg("Could not find transaction").into())
+    // ________________________________________________________________________
+    //
+    // Variant 2:
+    get_transactions(fname)?
+        .into_iter()
+        .find(|t| t.from == uname)
+        .ok_or_else(|| TransactionError::Msg("Could not find transaction").into())
 }
