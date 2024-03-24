@@ -2,3 +2,4 @@
 target/
 ngrams/
 *.lock
+.DS_Store/
