@@ -1,5 +1,5 @@
 .idea/
 target/
 ngrams/
-*.lock
+**/*.lock
 .DS_Store/
