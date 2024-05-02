@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 base64 = "0.22"
 diesel = { version = "2.1", features = ["sqlite", "r2d2"] }
+diesel_migrations = "2.1.0"
 lazy-regex = "3.1"
 rocket = { version = "0.5", features = ["json"] }
 rocket_sync_db_pools = { version = "0.1.0", features = ["diesel_sqlite_pool"] }

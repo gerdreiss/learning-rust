@@ -11,9 +11,11 @@ use diesel::result::Error;
 use models::*;
 use repositories::RustaceanRepository;
 use rocket::{
+    fairing::AdHoc,
     http::Status,
     response::status::{self, Custom},
     serde::json::{json, Json, Value},
+    Build, Rocket,
 };
 use rocket_sync_db_pools::database;
 
@@ -122,12 +124,30 @@ fn catchers() -> Vec<rocket::Catcher> {
     catchers![not_found, unauthorized, unprocessable_content]
 }
 
+async fn run_db_migrations(rocket: Rocket<Build>) -> Rocket<Build> {
+    use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
+
+    const MIGRATIONS: EmbeddedMigrations = embed_migrations!("./migrations");
+
+    DatabaseConnection::get_one(&rocket)
+        .await
+        .expect("Unable to retrieve connection")
+        .run(|c| {
+            c.run_pending_migrations(MIGRATIONS)
+                .expect("Failed to run migrations");
+        })
+        .await;
+
+    rocket
+}
+
 #[rocket::main]
 async fn main() {
     let _ = rocket::build()
         .mount("/", routes())
         .register("/", catchers())
         .attach(DatabaseConnection::fairing())
+        .attach(AdHoc::on_ignite("Diesel Migrations", run_db_migrations))
         .launch()
         .await;
 }
