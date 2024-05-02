@@ -25,7 +25,17 @@ struct DatabaseConnection(diesel::SqliteConnection);
 #[get("/rustaceans")]
 async fn get_rustaceans(_auth: BasicAuth, db: DatabaseConnection) -> Result<Value, Custom<Value>> {
     db.run(|c| {
-        RustaceanRepository::find_multiple(c, 1000)
+        RustaceanRepository::get_multiple(c, 1000)
+            .map(|rustaceans| {
+                rustaceans
+                    .into_iter()
+                    .map(|r| api::Rustacean {
+                        id: r.id,
+                        name: r.name,
+                        email: r.email,
+                    })
+                    .collect::<Vec<api::Rustacean>>()
+            })
             .map(|rustaceans| json!(rustaceans))
             .map_err(|error| Custom(Status::InternalServerError, json!(error.to_string())))
     })
@@ -39,7 +49,12 @@ async fn get_rustacean(
     db: DatabaseConnection,
 ) -> Result<Value, Custom<Value>> {
     db.run(move |c| {
-        RustaceanRepository::find(c, id)
+        RustaceanRepository::get(c, id)
+            .map(|rustacean| api::Rustacean {
+                id: rustacean.id,
+                name: rustacean.name,
+                email: rustacean.email,
+            })
             .map(|rustacean| json!(rustacean))
             .map_err(|error| match error {
                 Error::NotFound => Custom(Status::NotFound, json!(error.to_string())),
@@ -53,12 +68,23 @@ async fn get_rustacean(
 async fn create_rustacean(
     _auth: BasicAuth,
     db: DatabaseConnection,
-    new_rustacean: Json<NewRustacean>,
+    new_rustacean: Json<api::Rustacean>,
 ) -> Result<Value, Custom<Value>> {
-    db.run(|c| {
-        RustaceanRepository::create(c, new_rustacean.into_inner())
-            .map(|rustacean| json!(rustacean))
-            .map_err(|error| Custom(Status::InternalServerError, json!(error.to_string())))
+    db.run(move |c| {
+        RustaceanRepository::create(
+            c,
+            persistence::RustaceanData {
+                name: new_rustacean.name.clone(),
+                email: new_rustacean.email.clone(),
+            },
+        )
+        .map(|rustacean| api::Rustacean {
+            id: rustacean.id,
+            name: rustacean.name,
+            email: rustacean.email,
+        })
+        .map(|rustacean| json!(rustacean))
+        .map_err(|error| Custom(Status::InternalServerError, json!(error.to_string())))
     })
     .await
 }
@@ -68,15 +94,27 @@ async fn update_rustacean(
     id: i32,
     _auth: BasicAuth,
     db: DatabaseConnection,
-    rustacean: Json<Rustacean>,
+    rustacean: Json<api::Rustacean>,
 ) -> Result<Value, Custom<Value>> {
     db.run(move |c| {
-        RustaceanRepository::save(c, id, rustacean.into_inner())
-            .map(|rustacean| json!(rustacean))
-            .map_err(|error| match error {
-                Error::NotFound => Custom(Status::NotFound, json!(error.to_string())),
-                _ => Custom(Status::InternalServerError, json!(error.to_string())),
-            })
+        RustaceanRepository::save(
+            c,
+            id,
+            persistence::RustaceanData {
+                name: rustacean.name.clone(),
+                email: rustacean.email.clone(),
+            },
+        )
+        .map(|rustacean| api::Rustacean {
+            id: rustacean.id,
+            name: rustacean.name,
+            email: rustacean.email,
+        })
+        .map(|rustacean| json!(rustacean))
+        .map_err(|error| match error {
+            Error::NotFound => Custom(Status::NotFound, json!(error.to_string())),
+            _ => Custom(Status::InternalServerError, json!(error.to_string())),
+        })
     })
     .await
 }

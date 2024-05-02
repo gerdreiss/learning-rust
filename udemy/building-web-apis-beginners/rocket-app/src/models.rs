@@ -1,22 +1,31 @@
-use diesel::prelude::*;
-use rocket::serde::Deserialize;
-use rocket::serde::Serialize;
+pub mod persistence {
+    use crate::schema::rustaceans;
+    use diesel::prelude::*;
 
-use crate::schema::rustaceans;
+    #[derive(Queryable)]
+    pub struct Rustacean {
+        pub id: i32,
+        pub name: String,
+        pub email: String,
+        pub created_at: String, // TODO: use chrono crate
+    }
 
-#[derive(Deserialize, Serialize, Queryable, AsChangeset)]
-pub struct Rustacean {
-    #[serde(skip_deserializing)]
-    pub id: i32,
-    pub name: String,
-    pub email: String,
-    #[serde(skip_deserializing)]
-    pub created_at: String, // TODO: use chrono crate
+    #[derive(Insertable)]
+    #[diesel(table_name = rustaceans)]
+    pub struct RustaceanData {
+        pub name: String,
+        pub email: String,
+    }
 }
 
-#[derive(Deserialize, Insertable)]
-#[diesel(table_name = rustaceans)]
-pub struct NewRustacean {
-    pub name: String,
-    pub email: String,
+pub mod api {
+    use rocket::serde::Deserialize;
+    use rocket::serde::Serialize;
+
+    #[derive(Deserialize, Serialize)]
+    pub struct Rustacean {
+        pub id: i32,
+        pub name: String,
+        pub email: String,
+    }
 }

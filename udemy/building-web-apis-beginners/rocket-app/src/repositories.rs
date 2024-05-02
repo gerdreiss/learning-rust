@@ -1,31 +1,38 @@
-use crate::models::*;
+use crate::models::persistence::*;
 use crate::schema::*;
 use diesel::prelude::*;
 
 pub struct RustaceanRepository;
 
 impl RustaceanRepository {
-    pub fn find(c: &mut SqliteConnection, id: i32) -> QueryResult<Rustacean> {
+    pub fn get(c: &mut SqliteConnection, id: i32) -> QueryResult<Rustacean> {
         rustaceans::table.find(id).get_result::<Rustacean>(c)
     }
 
-    pub fn find_multiple(c: &mut SqliteConnection, limit: i64) -> QueryResult<Vec<Rustacean>> {
+    pub fn get_multiple(c: &mut SqliteConnection, limit: i64) -> QueryResult<Vec<Rustacean>> {
         rustaceans::table
             .order(rustaceans::id)
             .limit(limit)
             .load::<Rustacean>(c)
     }
 
-    pub fn create(c: &mut SqliteConnection, new_rustacean: NewRustacean) -> QueryResult<Rustacean> {
+    pub fn create(
+        c: &mut SqliteConnection,
+        new_rustacean: RustaceanData,
+    ) -> QueryResult<Rustacean> {
         diesel::insert_into(rustaceans::table)
             .values(&new_rustacean)
             .execute(c)?;
 
         let last_id = Self::last_inserted_id(c)?;
-        Self::find(c, last_id)
+        Self::get(c, last_id)
     }
 
-    pub fn save(c: &mut SqliteConnection, id: i32, rustacean: Rustacean) -> QueryResult<Rustacean> {
+    pub fn save(
+        c: &mut SqliteConnection,
+        id: i32,
+        rustacean: RustaceanData,
+    ) -> QueryResult<Rustacean> {
         diesel::update(rustaceans::table.find(id))
             .set((
                 rustaceans::name.eq(rustacean.name.to_owned()),
@@ -33,7 +40,7 @@ impl RustaceanRepository {
             ))
             .execute(c)?;
 
-        Self::find(c, id)
+        Self::get(c, id)
     }
 
     pub fn delete(c: &mut SqliteConnection, id: i32) -> QueryResult<usize> {
