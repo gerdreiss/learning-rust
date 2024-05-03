@@ -21,6 +21,7 @@
     * [Rust Programming Recipes](https://www.udemy.com/course/rust-programming-recipes)
     * [Rust Programming Course: From Beginner to Expert 2.0](https://www.udemy.com/course/rust-programming-master-class-from-beginner-to-expert/)
     * [Building web APIs with Rust (beginners](https://www.udemy.com/course/web-dev-with-rust-rocket-diesel/)
+    * [Building web APIs with Rust (advanced)](https://www.udemy.com/course/advanced-rust-web-apis)
 * [Tsoding](https://www.youtube.com/channel/UCEbYhDd6c6vngsF5PQpFVWg)
     * [AoC 2020 - Day 10: Adapter Array](https://www.youtube.com/watch?v=LjrCckaHjB0)
     * [Roguelike game in Rust](https://www.twitch.tv/videos/971369987)
