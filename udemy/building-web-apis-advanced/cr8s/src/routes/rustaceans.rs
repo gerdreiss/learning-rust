@@ -1,6 +1,5 @@
 use crate::{
-    models::rustaceans::{self, RustaceanData},
-    repositories::rustaceans::RustaceanRepository,
+    models::rustaceans::RustaceanData, repositories::rustaceans::RustaceanRepository,
     DatabaseConnection,
 };
 use diesel::result::Error;
