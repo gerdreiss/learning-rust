@@ -1,4 +1,4 @@
-use rocket_db_pools::Database;
+use rocket_db_pools::{diesel::PgPool, Database};
 
 mod models;
 mod repositories;
@@ -7,7 +7,7 @@ mod schema;
 
 #[derive(Database)]
 #[database("cr8s")]
-struct DatabaseConnection(rocket_db_pools::diesel::PgPool);
+struct DatabaseConnection(PgPool);
 
 #[rocket::main]
 async fn main() {
@@ -20,11 +20,11 @@ async fn main() {
                 routes::rustaceans::create_rustacean,
                 routes::rustaceans::update_rustacean,
                 routes::rustaceans::delete_rustacean,
-                // routes::crates::get_crates,
-                // routes::crates::get_crate,
-                // routes::crates::create_crate,
-                // routes::crates::update_crate,
-                // routes::crates::delete_crate
+                routes::crates::get_crates,
+                routes::crates::get_crate,
+                routes::crates::create_crate,
+                routes::crates::update_crate,
+                routes::crates::delete_crate
             ],
         )
         .attach(DatabaseConnection::init())
