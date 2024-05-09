@@ -14,7 +14,7 @@ pub struct Crate {
 }
 
 #[derive(Insertable, AsChangeset, Deserialize)]
-#[table_name = "crates"]
+#[diesel(table_name = crates)]
 pub struct CrateData {
     pub rustacean_id: i32,
     pub code: String,

@@ -20,6 +20,22 @@ pub async fn get_rustaceans(
         .map_err(|error| Custom(Status::InternalServerError, json!(error.to_string())))
 }
 
+#[rocket::get("/rustaceans?<offset>&<limit>", rank = 2)]
+pub async fn get_rustaceans_paginated(
+    mut database: Connection<DatabaseConnection>,
+    offset: Option<i64>,
+    limit: Option<i64>,
+) -> Result<Value, Custom<Value>> {
+    RustaceanRepository::get_paginated(
+        &mut database,
+        offset.unwrap_or_default(),
+        limit.unwrap_or_else(|| i64::MAX),
+    )
+    .await
+    .map(|rustaceans| json!(rustaceans))
+    .map_err(|error| Custom(Status::InternalServerError, json!(error.to_string())))
+}
+
 #[rocket::get("/rustaceans/<id>")]
 pub async fn get_rustacean(
     mut database: Connection<DatabaseConnection>,

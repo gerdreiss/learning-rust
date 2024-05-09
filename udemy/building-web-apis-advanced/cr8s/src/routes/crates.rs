@@ -17,6 +17,22 @@ pub async fn get_crates(
         .map_err(|error| Custom(Status::InternalServerError, json!(error.to_string())))
 }
 
+#[rocket::get("/crates?<offset>&<limit>", rank = 2)]
+pub async fn get_crates_paginated(
+    mut database: Connection<DatabaseConnection>,
+    offset: Option<i64>,
+    limit: Option<i64>,
+) -> Result<Value, Custom<Value>> {
+    CrateRepository::get_paginated(
+        &mut database,
+        offset.unwrap_or_default(),
+        limit.unwrap_or_else(|| i64::MAX),
+    )
+    .await
+    .map(|crates| json!(crates))
+    .map_err(|error| Custom(Status::InternalServerError, json!(error.to_string())))
+}
+
 #[rocket::get("/crates/<id>")]
 pub async fn get_crate(
     mut database: Connection<DatabaseConnection>,
