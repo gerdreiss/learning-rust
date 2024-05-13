@@ -1,6 +1,6 @@
 use crate::schema::users_roles;
 use diesel::prelude::*;
-use serde::*;
+use serde::{Deserialize, Serialize};
 
 #[derive(Queryable, Serialize)]
 #[diesel(belongs_to(User))]

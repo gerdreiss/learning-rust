@@ -1,7 +1,7 @@
 use diesel::{QueryDsl, QueryResult};
 use diesel_async::{AsyncPgConnection, RunQueryDsl};
 
-use crate::{models::rustaceans::*, schema::*};
+use crate::{models::rustaceans::*, schema::rustaceans};
 
 pub struct RustaceanRepository;
 

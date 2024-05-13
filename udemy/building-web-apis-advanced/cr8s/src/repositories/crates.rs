@@ -1,7 +1,7 @@
 use diesel::{QueryDsl, QueryResult};
 use diesel_async::{AsyncPgConnection, RunQueryDsl};
 
-use crate::{models::crates::*, schema::*};
+use crate::{models::crates::*, schema::crates};
 
 pub struct CrateRepository;
 

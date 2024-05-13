@@ -1,6 +1,6 @@
 use crate::schema::crates;
 use diesel::prelude::*;
-use serde::*;
+use serde::{Deserialize, Serialize};
 
 #[derive(Queryable, Serialize)]
 pub struct Crate {

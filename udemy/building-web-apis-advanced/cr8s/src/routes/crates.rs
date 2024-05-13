@@ -1,4 +1,8 @@
-use crate::{models::crates::CrateData, repositories::crates::CrateRepository, DatabaseConnection};
+use crate::{
+    models::crates::CrateData, //
+    repositories::crates::CrateRepository,
+    DatabaseConnection,
+};
 use diesel::result::Error;
 use rocket::{
     http::Status,
