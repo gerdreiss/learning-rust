@@ -1,6 +1,8 @@
-use crate::schema::rustaceans;
 use diesel::prelude::*;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
+
+use crate::schema::rustaceans;
 
 #[derive(Queryable, Serialize)]
 pub struct Rustacean {

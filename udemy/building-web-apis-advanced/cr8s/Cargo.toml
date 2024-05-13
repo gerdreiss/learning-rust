@@ -1,16 +1,19 @@
 [package]
 name = "cr8s"
+default-run = "server"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 chrono = { version = "0.4", features = ["serde"] }
+clap = "4.5"
 diesel = { version = "2.1", features = ["chrono"] }
 diesel-async = { version = "0.4", features = ["postgres"] }
 diesel_migrations = "2.1"
 rocket = { version = "0.5", features = ["json"] }
 rocket_db_pools = { version = "0.1", features = ["diesel_postgres"] }
 serde = "1.0"
+tokio = "1"
 
 [dev-dependencies]
 reqwest = { version = "0.12", features = ["json", "blocking"] }

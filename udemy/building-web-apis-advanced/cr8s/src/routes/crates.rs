@@ -1,15 +1,15 @@
-use crate::{
-    models::crates::CrateData, //
-    repositories::crates::CrateRepository,
-    DatabaseConnection,
-};
 use diesel::result::Error;
-use rocket::{
-    http::Status,
-    response::status::{Custom, NoContent},
-    serde::json::{json, Json, Value},
-};
+use rocket::http::Status;
+use rocket::response::status::Custom;
+use rocket::response::status::NoContent;
+use rocket::serde::json::json;
+use rocket::serde::json::Json;
+use rocket::serde::json::Value;
 use rocket_db_pools::Connection;
+
+use crate::models::crates::CrateData;
+use crate::repositories::crates::CrateRepository;
+use crate::repositories::DatabaseConnection;
 
 #[rocket::get("/crates")]
 pub async fn get_crates(
