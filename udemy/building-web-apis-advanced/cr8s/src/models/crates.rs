@@ -1,4 +1,4 @@
-use crate::schema::*;
+use crate::schema::crates;
 use diesel::prelude::*;
 use serde::*;
 
