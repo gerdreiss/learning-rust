@@ -4,7 +4,7 @@ use serde::Serialize;
 
 use crate::schema::roles;
 
-#[derive(Queryable, Serialize)]
+#[derive(Queryable, Serialize, Debug, Identifiable)]
 pub struct Role {
     pub id: i32,
     pub code: String,

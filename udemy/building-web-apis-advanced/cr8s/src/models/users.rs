@@ -4,7 +4,7 @@ use serde::Serialize;
 
 use crate::schema::users;
 
-#[derive(Queryable, Serialize, Debug)]
+#[derive(Queryable, Serialize, Debug, Identifiable)]
 pub struct User {
     pub id: i32,
     pub username: String,

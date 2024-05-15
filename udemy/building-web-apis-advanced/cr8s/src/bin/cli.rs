@@ -5,39 +5,11 @@ extern crate cr8s;
 
 #[tokio::main]
 async fn main() {
-    let username = Arg::new("username").short('u').required(true);
-    let password = Arg::new("password").short('p').required(true);
-    let roles = Arg::new("roles")
-        .short('r')
-        .required(true)
-        .num_args(1..)
-        .value_delimiter(',');
-    let create = Command::new("create")
-        .about("Create a new user")
-        .arg_required_else_help(true)
-        .arg(username)
-        .arg(password)
-        .arg(roles);
-
-    let list = Command::new("list").about("List all users");
-
-    let id = Arg::new("id").required(true);
-    let delete = Command::new("delete")
-        .about("Delete user by id")
-        .arg_required_else_help(true)
-        .arg(id);
-
-    let users = Command::new("users")
-        .about("User management")
-        .arg_required_else_help(true)
-        .subcommand(create)
-        .subcommand(list)
-        .subcommand(delete);
-
     let matches = Command::new("cr8s")
         .about("A CLI for the Cr8s API")
         .arg_required_else_help(true)
-        .subcommand(users)
+        .subcommand(roles())
+        .subcommand(users())
         .get_matches();
 
     match matches.subcommand() {
@@ -71,6 +43,64 @@ async fn main() {
             _ => unreachable!(),
         },
 
+        Some(("roles", submatches)) => match submatches.subcommand() {
+            Some(("create", create_matches)) => {
+                let code = create_matches.get_one::<String>("code").unwrap().to_owned();
+                let name = create_matches.get_one::<String>("name").unwrap().to_owned();
+
+                cr8s::commands::create_role(code, name).await
+            }
+
+            Some(("list", _)) => cr8s::commands::list_roles().await,
+
+            _ => unreachable!(),
+        },
+
         _ => unreachable!(),
+    }
+
+    fn roles() -> Command {
+        let create = Command::new("create")
+            .about("Create a new role")
+            .arg_required_else_help(true)
+            .arg(Arg::new("code").short('c').required(true))
+            .arg(Arg::new("name").short('n').required(true));
+
+        let list = Command::new("list").about("List all roles");
+
+        Command::new("roles")
+            .about("Role management")
+            .arg_required_else_help(true)
+            .subcommand(create)
+            .subcommand(list)
+    }
+
+    fn users() -> Command {
+        let create = Command::new("create")
+            .about("Create a new user")
+            .arg_required_else_help(true)
+            .arg(Arg::new("username").short('u').required(true))
+            .arg(Arg::new("password").short('p').required(true))
+            .arg(
+                Arg::new("roles")
+                    .short('r')
+                    .required(true)
+                    .num_args(1..)
+                    .value_delimiter(','),
+            );
+
+        let delete = Command::new("delete")
+            .about("Delete user by id")
+            .arg_required_else_help(true)
+            .arg(Arg::new("id").required(true));
+
+        let list = Command::new("list").about("List all users");
+
+        Command::new("users")
+            .about("User management")
+            .arg_required_else_help(true)
+            .subcommand(create)
+            .subcommand(delete)
+            .subcommand(list)
     }
 }

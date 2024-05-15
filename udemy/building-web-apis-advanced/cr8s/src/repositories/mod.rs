@@ -1,6 +1,7 @@
 pub mod crates;
 pub mod roles;
 pub mod rustaceans;
+pub mod userroles;
 pub mod users;
 
 use rocket_db_pools::diesel::PgPool;
