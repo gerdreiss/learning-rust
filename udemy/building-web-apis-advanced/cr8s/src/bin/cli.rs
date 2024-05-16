@@ -1,12 +1,11 @@
-use clap::value_parser;
-use clap::Arg;
-use clap::Command;
-
 extern crate cr8s;
+
+use cr8s::commands::definitions;
+use cr8s::commands::handlers;
 
 #[tokio::main]
 async fn main() {
-    match cr8s().get_matches().subcommand() {
+    match definitions::cr8s().get_matches().subcommand() {
         Some(("users", submatches)) => match submatches.subcommand() {
             Some(("create", create_matches)) => {
                 let username = create_matches
@@ -23,15 +22,15 @@ async fn main() {
                     .map(|s| s.to_owned())
                     .collect();
 
-                cr8s::commands::create_user(username, password, role_codes).await
+                handlers::create_user(username, password, role_codes).await
             }
 
-            Some(("list", _)) => cr8s::commands::list_users().await,
+            Some(("list", _)) => handlers::list_users().await,
 
             Some(("delete", delete_matches)) => {
                 let id = delete_matches.get_one::<i32>("id").unwrap().to_owned();
 
-                cr8s::commands::delete_user(id).await
+                handlers::delete_user(id).await
             }
 
             _ => unreachable!(),
@@ -42,71 +41,14 @@ async fn main() {
                 let code = create_matches.get_one::<String>("code").unwrap().to_owned();
                 let name = create_matches.get_one::<String>("name").unwrap().to_owned();
 
-                cr8s::commands::create_role(code, name).await
+                handlers::create_role(code, name).await
             }
 
-            Some(("list", _)) => cr8s::commands::list_roles().await,
+            Some(("list", _)) => handlers::list_roles().await,
 
             _ => unreachable!(),
         },
 
         _ => unreachable!(),
-    }
-
-    fn cr8s() -> Command {
-        Command::new("cr8s")
-            .about("A CLI for the Cr8s API")
-            .arg_required_else_help(true)
-            .subcommand(roles())
-            .subcommand(users())
-    }
-
-    fn roles() -> Command {
-        let create = Command::new("create")
-            .about("Create a new role")
-            .arg_required_else_help(true)
-            .arg(Arg::new("code").short('c').required(true))
-            .arg(Arg::new("name").short('n').required(true));
-
-        let list = Command::new("list").about("List all roles");
-
-        Command::new("roles")
-            .about("Role management")
-            .arg_required_else_help(true)
-            .subcommand(create)
-            .subcommand(list)
-    }
-
-    fn users() -> Command {
-        let create = Command::new("create")
-            .about("Create a new user")
-            .arg_required_else_help(true)
-            .arg(Arg::new("username").short('u').required(true))
-            .arg(Arg::new("password").short('p').required(true))
-            .arg(
-                Arg::new("roles")
-                    .short('r')
-                    .required(true)
-                    .num_args(1..)
-                    .value_delimiter(','),
-            );
-
-        let delete = Command::new("delete")
-            .about("Delete user by id")
-            .arg_required_else_help(true)
-            .arg(
-                Arg::new("id")
-                    .required(true)
-                    .value_parser(value_parser!(i32)),
-            );
-
-        let list = Command::new("list").about("List all users");
-
-        Command::new("users")
-            .about("User management")
-            .arg_required_else_help(true)
-            .subcommand(create)
-            .subcommand(delete)
-            .subcommand(list)
     }
 }
