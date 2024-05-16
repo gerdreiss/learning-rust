@@ -82,6 +82,12 @@ pub async fn list_users() {
 
 pub async fn delete_user(id: i32) {
     let mut c = load_db_connection().await;
+    let user = UserRepository::get(&mut c, id)
+        .await
+        .expect("Error getting user");
+    let _ = UserRoleRepository::delete_all_by_user(&mut c, &user)
+        .await
+        .expect("Error deleting user roles");
     let deleted = UserRepository::delete(&mut c, id)
         .await
         .expect("Error deleting user");

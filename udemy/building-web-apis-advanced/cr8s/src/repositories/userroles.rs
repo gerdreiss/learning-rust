@@ -38,4 +38,10 @@ impl UserRoleRepository {
             .load(c)
             .await
     }
+
+    pub async fn delete_all_by_user(c: &mut AsyncPgConnection, user: &User) -> QueryResult<usize> {
+        diesel::delete(UserRole::belonging_to(&user))
+            .execute(c)
+            .await
+    }
 }

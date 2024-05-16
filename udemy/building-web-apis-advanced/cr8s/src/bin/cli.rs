@@ -1,3 +1,4 @@
+use clap::value_parser;
 use clap::Arg;
 use clap::Command;
 
@@ -5,14 +6,7 @@ extern crate cr8s;
 
 #[tokio::main]
 async fn main() {
-    let matches = Command::new("cr8s")
-        .about("A CLI for the Cr8s API")
-        .arg_required_else_help(true)
-        .subcommand(roles())
-        .subcommand(users())
-        .get_matches();
-
-    match matches.subcommand() {
+    match cr8s().get_matches().subcommand() {
         Some(("users", submatches)) => match submatches.subcommand() {
             Some(("create", create_matches)) => {
                 let username = create_matches
@@ -59,6 +53,14 @@ async fn main() {
         _ => unreachable!(),
     }
 
+    fn cr8s() -> Command {
+        Command::new("cr8s")
+            .about("A CLI for the Cr8s API")
+            .arg_required_else_help(true)
+            .subcommand(roles())
+            .subcommand(users())
+    }
+
     fn roles() -> Command {
         let create = Command::new("create")
             .about("Create a new role")
@@ -92,7 +94,11 @@ async fn main() {
         let delete = Command::new("delete")
             .about("Delete user by id")
             .arg_required_else_help(true)
-            .arg(Arg::new("id").required(true));
+            .arg(
+                Arg::new("id")
+                    .required(true)
+                    .value_parser(value_parser!(i32)),
+            );
 
         let list = Command::new("list").about("List all users");
 

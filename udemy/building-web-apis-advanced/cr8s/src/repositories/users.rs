@@ -20,6 +20,10 @@ impl UserRepository {
         users::table.load(c).await
     }
 
+    pub async fn get(c: &mut AsyncPgConnection, id: i32) -> QueryResult<User> {
+        users::table.find(id).get_result(c).await
+    }
+
     pub async fn delete(c: &mut AsyncPgConnection, id: i32) -> QueryResult<usize> {
         diesel::delete(users::table.find(id)).execute(c).await
     }
