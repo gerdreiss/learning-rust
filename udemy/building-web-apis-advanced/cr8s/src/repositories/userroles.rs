@@ -1,5 +1,4 @@
-use diesel::BelongingToDsl;
-use diesel::QueryResult;
+use diesel::prelude::*;
 use diesel_async::AsyncPgConnection;
 use diesel_async::RunQueryDsl;
 
@@ -34,6 +33,9 @@ impl UserRoleRepository {
         c: &mut AsyncPgConnection,
         user: &User,
     ) -> QueryResult<Vec<UserRole>> {
-        UserRole::belonging_to(&user).get_results(c).await
+        UserRole::belonging_to(&user)
+            .select(UserRole::as_select())
+            .load(c)
+            .await
     }
 }

@@ -4,6 +4,7 @@ use diesel_async::AsyncPgConnection;
 use crate::models::roles::RoleData;
 use crate::models::userroles::UserRoleData;
 use crate::models::users::UserData;
+use crate::repositories::authorized_users::AuthorizedUserRepository;
 use crate::repositories::roles::RoleRepository;
 use crate::repositories::userroles::UserRoleRepository;
 use crate::repositories::users::UserRepository;
@@ -68,10 +69,15 @@ pub async fn create_user(username: String, password: String, role_codes: Vec<Str
 
 pub async fn list_users() {
     let mut c = load_db_connection().await;
-    let users = UserRepository::get_all(&mut c)
+
+    let authorized_users = AuthorizedUserRepository::get_all(&mut c)
         .await
-        .expect("Error listing users");
-    println!("{:?}", users);
+        .expect("Error listing authorized users");
+
+    authorized_users.into_iter().for_each(|authorized_user| {
+        println!("user: {:?}", authorized_user.user);
+        println!("roles: {:?}\n\n", authorized_user.roles);
+    });
 }
 
 pub async fn delete_user(id: i32) {

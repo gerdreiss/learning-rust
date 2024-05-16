@@ -6,7 +6,7 @@ use crate::models::roles::Role;
 use crate::models::users::User;
 use crate::schema::users_roles;
 
-#[derive(Queryable, Serialize, Debug, Associations, Identifiable)]
+#[derive(Queryable, Serialize, Debug, Associations, Identifiable, Selectable)]
 #[diesel(belongs_to(User))]
 #[diesel(belongs_to(Role))]
 #[diesel(table_name = users_roles)]
