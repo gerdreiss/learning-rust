@@ -1,3 +1,7 @@
+use argon2::password_hash::rand_core::OsRng;
+use argon2::password_hash::SaltString;
+use argon2::Argon2;
+use argon2::PasswordHasher;
 use diesel_async::AsyncConnection;
 use diesel_async::AsyncPgConnection;
 
@@ -35,9 +39,22 @@ pub async fn list_roles() {
 pub async fn create_user(username: String, password: String, role_codes: Vec<String>) {
     let mut c = load_db_connection().await;
 
-    let user = UserRepository::create(&mut c, UserData { username, password })
-        .await
-        .expect("Error creating user");
+    let salt = SaltString::generate(OsRng);
+    let argon2 = Argon2::default();
+    let password_hash = argon2
+        .hash_password(password.as_bytes(), &salt)
+        .expect("Error hashing password")
+        .to_string();
+
+    let user = UserRepository::create(
+        &mut c,
+        UserData {
+            username,
+            password: password_hash,
+        },
+    )
+    .await
+    .expect("Error creating user");
 
     let user_roles = RoleRepository::get_all_by_codes(&mut c, role_codes)
         .await
