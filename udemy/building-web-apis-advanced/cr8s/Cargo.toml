@@ -11,6 +11,7 @@ clap = "4.5"
 diesel = { version = "2.1", features = ["chrono"] }
 diesel-async = { version = "0.4", features = ["postgres"] }
 diesel_migrations = "2.1"
+rand = "0.8"
 rocket = { version = "0.5", features = ["json"] }
 rocket_db_pools = { version = "0.1", features = ["diesel_postgres"] }
 serde = "1.0"

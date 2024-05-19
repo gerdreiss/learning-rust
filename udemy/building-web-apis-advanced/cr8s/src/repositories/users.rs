@@ -1,3 +1,4 @@
+use diesel::ExpressionMethods;
 use diesel::QueryDsl;
 use diesel::QueryResult;
 use diesel_async::AsyncPgConnection;
@@ -22,6 +23,16 @@ impl UserRepository {
 
     pub async fn get(c: &mut AsyncPgConnection, id: i32) -> QueryResult<User> {
         users::table.find(id).get_result(c).await
+    }
+
+    pub async fn get_by_username(
+        c: &mut AsyncPgConnection,
+        username: &String,
+    ) -> QueryResult<User> {
+        users::table
+            .filter(users::username.eq(username))
+            .get_result(c)
+            .await
     }
 
     pub async fn delete(c: &mut AsyncPgConnection, id: i32) -> QueryResult<usize> {
